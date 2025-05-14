@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import GUI from "lil-gui"
 
 console.log("Hello, Three.js with TypeScript!");
 
@@ -27,6 +28,10 @@ const renderer = new THREE.WebGLRenderer({ canvas: canvas });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
+// --- Debug UI ---
+const gui = new GUI
+gui.close()
+
 // --- Resize ---
 window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight
@@ -35,9 +40,19 @@ window.addEventListener("resize", () => {
 })
 
 // --- Render Loop ---
+const clock = new THREE.Clock()
+
 function animate(){
+    // Clock
+    const elapsedTime = clock.getElapsedTime()
+
+    // Update control
     controls.update()
+
+    // Update render
     renderer.render(scene, camera);
+
+    // Call animate again on the next frame
     window.requestAnimationFrame(animate)
 }
 animate()
